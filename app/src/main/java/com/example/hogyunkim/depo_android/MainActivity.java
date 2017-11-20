@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private static final String TAG = "connection failed";
     private static final int MY_PERMISSION_REQUEST_FINE_LOCATION = 3709;
 
-    private TextView latitudeText;
-    private TextView longitudeText;
+    //private TextView latitudeText;
+    //private TextView longitudeText;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private Double myLatitude;
@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        latitudeText = (TextView) findViewById(R.id.tvLatitude);
-        longitudeText = (TextView) findViewById(R.id.tvLongitude);
+        //latitudeText = (TextView) findViewById(R.id.tvLatitude);
+        //longitudeText = (TextView) findViewById(R.id.tvLongitude);
         getAddress = (Button) findViewById(R.id.btGetAddress);
         address = (TextView) findViewById(R.id.tvAddress);
 
@@ -171,8 +171,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void onLocationChanged(Location location) {
         myLatitude = location.getLatitude();
         myLongitude = location.getLongitude();
-        latitudeText.setText("Latitude :" + String.valueOf(myLatitude));
-        longitudeText.setText("Longitude :" + String.valueOf(myLongitude));
+        //latitudeText.setText("Latitude :" + String.valueOf(myLatitude));
+        //longitudeText.setText("Longitude :" + String.valueOf(myLongitude));
 
     }
 
