@@ -15,12 +15,15 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.example.hogyunkim.depo_android.Utils.BottomNavigationViewHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -28,6 +31,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -54,32 +58,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private String mAddressOutPut;
 
 
-    private TextView mTextMessage;
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
-                    return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
-                    return true;
-            }
-            return false;
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupBottomNavigationView();
 
         //latitudeText = (TextView) findViewById(R.id.tvLatitude);
         //longitudeText = (TextView) findViewById(R.id.tvLongitude);
@@ -105,41 +88,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
 
-        mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    private void fetchAddressButtonHandler(View view) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
 
-                @Override
-                public void onSuccess(Location location) {
-                    mLastKnownLocation = location;
-
-                    // Handle location returns null
-                    if (mLastKnownLocation == null){
-                        return;
-                    }
-                    if (!Geocoder.isPresent()){
-                        Toast.makeText(MainActivity.this, "No Geocoder present,", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-
-                    startIntentService();
-                }
-            });
-        }
-    }
-
-    private void startIntentService() {
-        Intent intent = new Intent(this, FetchAddressIntentService.class);
-        mResultReceiver = new AddressResultReceiver( new Handler());
-        intent.putExtra(RECEIVER, mResultReceiver);
-        intent.putExtra(LOCATION_DATA_EXTRA, mLastKnownLocation);
-        startService(intent);
-    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -218,6 +169,50 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     }
 
+
+
+    private void displayAddressOutput() {
+        address.setText(mAddressOutPut);
+    }
+    private void fetchAddressButtonHandler(View view) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+
+                @Override
+                public void onSuccess(Location location) {
+                    mLastKnownLocation = location;
+
+                    // Handle location returns null
+                    if (mLastKnownLocation == null){
+                        return;
+                    }
+                    if (!Geocoder.isPresent()){
+                        Toast.makeText(MainActivity.this, "No Geocoder present,", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    startIntentService();
+                }
+            });
+        }
+    }
+    private void startIntentService() {
+        Intent intent = new Intent(this, FetchAddressIntentService.class);
+        mResultReceiver = new AddressResultReceiver( new Handler());
+        intent.putExtra(RECEIVER, mResultReceiver);
+        intent.putExtra(LOCATION_DATA_EXTRA, mLastKnownLocation);
+        startService(intent);
+    }
+    private void setupBottomNavigationView(){
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(MainActivity.this, bottomNavigationViewEx);
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+    }
+
+
     private class AddressResultReceiver extends ResultReceiver {
 
         public AddressResultReceiver(Handler handler) {
@@ -237,9 +232,5 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 Toast.makeText(getApplicationContext(), "Address Found", Toast.LENGTH_LONG).show();
             }
         }
-    }
-
-    private void displayAddressOutput() {
-        address.setText(mAddressOutPut);
     }
 }

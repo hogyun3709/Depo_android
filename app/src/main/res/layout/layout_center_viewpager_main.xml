@@ -1,0 +1,37 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.ViewPager
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/container">
+
+        </android.support.v4.view.ViewPager>
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="181dp"
+            android:layout_marginTop="182dp"
+            android:text="Address">
+
+        </TextView>
+
+
+        <Button
+            android:id="@+id/btGetAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="38dp"
+            android:text="Get Address">
+
+        </Button>
+
+
+    </RelativeLayout>
+
+
+</merge>
