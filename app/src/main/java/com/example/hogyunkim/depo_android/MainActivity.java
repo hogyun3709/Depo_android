@@ -64,6 +64,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         setContentView(R.layout.activity_main);
         setupBottomNavigationView();
 
+        Button btnSearchRes = (Button) findViewById(R.id.search_restaurant);
+        btnSearchRes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
         //latitudeText = (TextView) findViewById(R.id.tvLatitude);
         //longitudeText = (TextView) findViewById(R.id.tvLongitude);
         getAddress = (Button) findViewById(R.id.btGetAddress);

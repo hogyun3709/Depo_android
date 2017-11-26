@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.hogyunkim.depo_android.MainActivity">
+    tools:context="com.example.hogyunkim.depo_android.ProfileActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,34 +23,22 @@
         </RelativeLayout>
 
         <!-- Body -->
-
-        <RelativeLayout
+        <EditText
+            android:id="@+id/search_bar_restaurant"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/relLayout2"
-            android:layout_below="@id/relLayout1">
-
-            <include layout="@layout/layout_center_viewpager_main"/>
-
-
-
-        </RelativeLayout>
+            android:layout_height="50dp"
+            android:layout_below="@id/relLayout1"/>
+        <ListView
+            android:id="@+id/theList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/search_bar_restaurant"></ListView>
 
          <!--Bottom-->
 
         <include layout="@layout/layout_bottom_navigation_view"/>
 
-        <Button
-            android:id="@+id/search_restaurant"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="80dp"
-            android:layout_marginEnd="27dp"
-            android:layout_marginRight="27dp"
-            android:text="Search Restaurant" />
+
 
 
     </RelativeLayout>
